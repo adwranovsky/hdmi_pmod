@@ -19,7 +19,7 @@ U 1 1 5FD183EA
 P 7800 3500
 F 0 "J0" H 8230 3546 50  0000 L CNN
 F 1 "HDMI_A_1.4" H 8230 3455 50  0001 L CNN
-F 2 "" H 7825 3500 50  0001 C CNN
+F 2 "ultra_librarian:10029449-111RLF" H 7825 3500 50  0001 C CNN
 F 3 "https://en.wikipedia.org/wiki/HDMI" H 7825 3500 50  0001 C CNN
 	1    7800 3500
 	1    0    0    -1  
@@ -30,7 +30,7 @@ U 1 1 5FD1CEBB
 P 3150 3250
 F 0 "PMOD0" H 3075 3933 50  0000 C CNN
 F 1 "PMOD-Device-x2-Type-XHS" V 2790 2540 50  0001 L CNN
-F 2 "pmod-conn_6x2:pmod_pin_array_6x2" V 2700 2540 60  0001 L CNN
+F 2 "PMOD:pmod_pin_array_6x2_hs" V 2700 2540 60  0001 L CNN
 F 3 "https://docs.google.com/a/mithis.com/spreadsheets/d/1D-GboyrP57VVpejQzEm0P1WEORo1LAIt92hk1bZGEoo/edit#gid=0" H 3075 3940 60  0001 C CNN
 	1    3150 3250
 	1    0    0    -1  
@@ -108,7 +108,7 @@ U 1 1 5FD7C0CA
 P 5050 4550
 F 0 "J1" H 5100 4775 50  0000 C CNN
 F 1 "Conn_02x04_Counter_Clockwise" H 5100 4776 50  0001 C CNN
-F 2 "" H 5050 4550 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x04_P2.54mm_Vertical" H 5050 4550 50  0001 C CNN
 F 3 "~" H 5050 4550 50  0001 C CNN
 	1    5050 4550
 	1    0    0    -1  
@@ -253,7 +253,7 @@ U 1 1 5FDEF228
 P 5950 4150
 F 0 "R1" H 6020 4196 50  0000 L CNN
 F 1 "2k" H 6020 4105 50  0000 L CNN
-F 2 "" V 5880 4150 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 5880 4150 50  0001 C CNN
 F 3 "~" H 5950 4150 50  0001 C CNN
 	1    5950 4150
 	1    0    0    -1  
@@ -264,7 +264,7 @@ U 1 1 5FDEFF7C
 P 6300 4150
 F 0 "R2" H 6370 4196 50  0000 L CNN
 F 1 "2k" H 6370 4105 50  0000 L CNN
-F 2 "" V 6230 4150 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 6230 4150 50  0001 C CNN
 F 3 "~" H 6300 4150 50  0001 C CNN
 	1    6300 4150
 	1    0    0    -1  

@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name ultra_librarian)(type KiCad)(uri ${KIPRJMOD}/footprints.pretty)(options "")(descr "footprints downloaded from UltraLibrarian"))
+)
