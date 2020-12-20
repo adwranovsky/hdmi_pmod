@@ -35,62 +35,22 @@ F 3 "https://docs.google.com/a/mithis.com/spreadsheets/d/1D-GboyrP57VVpejQzEm0P1
 	1    3150 3250
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7400 3200 5350 3200
-Wire Wire Line
-	7400 3100 5450 3100
-Wire Wire Line
-	3300 2700 5450 2700
-Wire Wire Line
-	5450 2700 5450 3100
-Wire Wire Line
-	3300 2800 5350 2800
-Wire Wire Line
-	5350 2800 5350 3200
-Wire Wire Line
-	3300 2900 7400 2900
-Wire Wire Line
-	3300 3000 7400 3000
-Wire Wire Line
-	5550 2700 7400 2700
-Wire Wire Line
-	3300 3400 5550 3400
-Wire Wire Line
-	5550 3400 5550 2700
-Wire Wire Line
-	5650 2800 5650 3500
-Wire Wire Line
-	5650 3500 3300 3500
-Wire Wire Line
-	5650 2800 7400 2800
-Text Label 3550 3400 0    50   ~ 0
-TMDS_R+
-Text Label 3550 3500 0    50   ~ 0
-TMDS_R-
-Text Label 3550 2900 0    50   ~ 0
+Text Label 6900 2900 0    50   ~ 0
 TMDS_G+
-Text Label 3550 3000 0    50   ~ 0
+Text Label 6900 3000 0    50   ~ 0
 TMDS_G-
-Text Label 3550 2700 0    50   ~ 0
-TMDS_B+
-Text Label 3550 2800 0    50   ~ 0
-TMDS_B-
-Wire Wire Line
-	3300 3600 5750 3600
-Wire Wire Line
-	5750 3600 5750 3300
-Wire Wire Line
-	5750 3300 7400 3300
-Wire Wire Line
-	7400 3400 5850 3400
-Wire Wire Line
-	5850 3400 5850 3700
-Wire Wire Line
-	5850 3700 3300 3700
-Text Label 3550 3600 0    50   ~ 0
+Text Label 6900 3100 0    50   ~ 0
+TMDS_R+
+Text Label 6900 3200 0    50   ~ 0
+TMDS_R-
+Text Label 6900 3300 0    50   ~ 0
 TMDS_CLK+
-Text Label 3550 3700 0    50   ~ 0
+Text Label 6900 3400 0    50   ~ 0
 TMDS_CLK-
+Text Label 6900 2700 0    50   ~ 0
+TMDS_B+
+Text Label 6900 2800 0    50   ~ 0
+TMDS_B-
 $Comp
 L power:GND #PWR0101
 U 1 1 5FD70667
@@ -214,7 +174,7 @@ Text Label 5500 4550 0    50   ~ 0
 SCL
 Text Label 5500 4650 0    50   ~ 0
 SDA
-Text Notes 3900 2500 0    50   ~ 0
+Text Notes 3950 2150 0    50   ~ 0
 The differential characteristic impedance of each TMDS signal shall be 100 Ohms
 Wire Wire Line
 	7600 4600 7600 4700
@@ -338,4 +298,60 @@ Wire Wire Line
 Connection ~ 3500 3800
 Wire Wire Line
 	3500 3800 3500 3100
+Wire Wire Line
+	7400 3000 5650 3000
+Wire Wire Line
+	3300 3700 5650 3700
+Wire Wire Line
+	5550 3600 5550 2900
+Wire Wire Line
+	3300 3600 5550 3600
+Wire Wire Line
+	5550 2900 7400 2900
+Wire Wire Line
+	5650 3000 5650 3700
+Wire Wire Line
+	5450 2800 7400 2800
+Wire Wire Line
+	5350 2700 5350 3400
+Wire Wire Line
+	5350 3400 3300 3400
+Wire Wire Line
+	5350 2700 7400 2700
+Wire Wire Line
+	3300 3500 5450 3500
+Wire Wire Line
+	5450 2800 5450 3500
+Wire Wire Line
+	3300 2700 4200 2700
+Wire Wire Line
+	4200 2700 4200 2500
+Wire Wire Line
+	4200 2500 6400 2500
+Wire Wire Line
+	6400 2500 6400 3300
+Wire Wire Line
+	6400 3300 7400 3300
+Wire Wire Line
+	3300 2800 4300 2800
+Wire Wire Line
+	4300 2800 4300 2600
+Wire Wire Line
+	4300 2600 6300 2600
+Wire Wire Line
+	6300 2600 6300 3400
+Wire Wire Line
+	6300 3400 7400 3400
+Wire Wire Line
+	3300 2900 4300 2900
+Wire Wire Line
+	4300 2900 4300 3100
+Wire Wire Line
+	4300 3100 7400 3100
+Wire Wire Line
+	3300 3000 4200 3000
+Wire Wire Line
+	4200 3000 4200 3200
+Wire Wire Line
+	4200 3200 7400 3200
 $EndSCHEMATC
