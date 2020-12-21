@@ -96,21 +96,13 @@ F 3 "" H 7800 2400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7050 4750 7050 4200
-Wire Wire Line
-	7050 4200 7400 4200
-Wire Wire Line
 	4850 4750 4750 4750
 Wire Wire Line
 	4750 4750 4750 4900
-Wire Wire Line
-	7150 4900 7150 4100
-Wire Wire Line
-	7150 4100 7400 4100
 Text Label 5500 4900 0    50   ~ 0
-HEAC+
-Text Label 5500 4750 0    50   ~ 0
 HEAC-
+Text Label 5500 4750 0    50   ~ 0
+HEAC+
 Wire Wire Line
 	6950 4650 6950 3900
 Wire Wire Line
@@ -354,4 +346,12 @@ Wire Wire Line
 	4200 3000 4200 3200
 Wire Wire Line
 	4200 3200 7400 3200
+Wire Wire Line
+	7050 4100 7400 4100
+Wire Wire Line
+	7050 4100 7050 4750
+Wire Wire Line
+	7150 4900 7150 4200
+Wire Wire Line
+	7150 4200 7400 4200
 $EndSCHEMATC
