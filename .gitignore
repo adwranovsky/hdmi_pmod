@@ -5,3 +5,5 @@ fp-info-cache
 *.bak
 *.swp
 *.vim
+*.gbrjob
+*.zip
