@@ -95,13 +95,9 @@ F 3 "" H 7800 2400 50  0001 C CNN
 	1    7800 2400
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	4850 4750 4750 4750
-Wire Wire Line
-	4750 4750 4750 4900
-Text Label 5500 4900 0    50   ~ 0
+Text Label 7150 4200 0    50   ~ 0
 HEAC-
-Text Label 5500 4750 0    50   ~ 0
+Text Label 7150 4100 0    50   ~ 0
 HEAC+
 Wire Wire Line
 	6950 4650 6950 3900
@@ -160,11 +156,11 @@ Wire Wire Line
 	4750 4450 4850 4450
 Wire Wire Line
 	4750 4300 4750 4450
-Text Label 5500 4450 0    50   ~ 0
+Text Label 7200 3600 0    50   ~ 0
 CEC
-Text Label 5500 4550 0    50   ~ 0
+Text Label 7200 3800 0    50   ~ 0
 SCL
-Text Label 5500 4650 0    50   ~ 0
+Text Label 7200 3900 0    50   ~ 0
 SDA
 Text Notes 3950 2150 0    50   ~ 0
 The differential characteristic impedance of each TMDS signal shall be 100 Ohms
@@ -189,12 +185,6 @@ Wire Wire Line
 Connection ~ 7900 4700
 Wire Wire Line
 	7900 4700 8000 4700
-Wire Wire Line
-	5350 4650 6300 4650
-Wire Wire Line
-	5350 4750 7050 4750
-Wire Wire Line
-	4750 4900 6300 4900
 $Comp
 L Device:R R1
 U 1 1 5FDEF228
@@ -219,9 +209,6 @@ F 3 "~" H 6300 4150 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6300 4300 6300 4650
-Connection ~ 6300 4650
-Wire Wire Line
-	6300 4650 6950 4650
 $Comp
 L power:+5V #PWR0107
 U 1 1 5FDF32EE
@@ -302,11 +289,7 @@ Wire Wire Line
 Wire Wire Line
 	7050 4100 7050 4750
 Wire Wire Line
-	7150 4900 7150 4200
-Wire Wire Line
 	7150 4200 7400 4200
-Wire Wire Line
-	5350 4550 6050 4550
 $Comp
 L Device:R R3
 U 1 1 5FE91F95
@@ -320,7 +303,6 @@ F 3 "~" H 5800 4150 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	6050 4300 6050 4550
-Connection ~ 6050 4550
 Wire Wire Line
 	6050 4550 6850 4550
 $Comp
@@ -335,39 +317,9 @@ F 3 "" H 5800 4000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5350 4450 5800 4450
-Wire Wire Line
 	5800 4300 5800 4450
-Connection ~ 5800 4450
 Wire Wire Line
 	5800 4450 6750 4450
-$Comp
-L Device:R R4
-U 1 1 5FEA386B
-P 6300 5200
-F 0 "R4" H 6370 5246 50  0000 L CNN
-F 1 "100k" H 6370 5155 50  0000 L CNN
-F 2 "Resistor_SMD:R_0805_2012Metric" V 6230 5200 50  0001 C CNN
-F 3 "~" H 6300 5200 50  0001 C CNN
-	1    6300 5200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6300 5050 6300 4900
-Connection ~ 6300 4900
-Wire Wire Line
-	6300 4900 7150 4900
-$Comp
-L power:GND #PWR0111
-U 1 1 5FEA668D
-P 6300 5350
-F 0 "#PWR0111" H 6300 5100 50  0001 C CNN
-F 1 "GND" H 6305 5177 50  0000 C CNN
-F 2 "" H 6300 5350 50  0001 C CNN
-F 3 "" H 6300 5350 50  0001 C CNN
-	1    6300 5350
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	5250 2700 5250 2900
 Wire Wire Line
@@ -408,4 +360,66 @@ Wire Wire Line
 	3300 3700 5850 3700
 Wire Wire Line
 	5850 3200 7400 3200
+Wire Wire Line
+	4850 4750 4750 4750
+Wire Wire Line
+	4750 4750 4750 4900
+Wire Wire Line
+	4750 4900 5800 4900
+Wire Wire Line
+	5800 4900 5800 4450
+Connection ~ 5800 4450
+Wire Wire Line
+	5350 4750 7050 4750
+Wire Wire Line
+	6050 4550 5550 4550
+Wire Wire Line
+	5550 4550 5550 4650
+Wire Wire Line
+	5550 4650 5350 4650
+Connection ~ 6050 4550
+Wire Wire Line
+	6300 4650 6950 4650
+Wire Wire Line
+	6300 4650 5650 4650
+Wire Wire Line
+	5650 4650 5650 4450
+Wire Wire Line
+	5650 4450 5350 4450
+Connection ~ 6300 4650
+$Comp
+L power:GND #PWR0111
+U 1 1 5FEA668D
+P 6300 5550
+F 0 "#PWR0111" H 6300 5300 50  0001 C CNN
+F 1 "GND" H 6305 5377 50  0000 C CNN
+F 2 "" H 6300 5550 50  0001 C CNN
+F 3 "" H 6300 5550 50  0001 C CNN
+	1    6300 5550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6300 5100 7150 5100
+Wire Wire Line
+	6300 5250 6300 5100
+$Comp
+L Device:R R4
+U 1 1 5FEA386B
+P 6300 5400
+F 0 "R4" H 6370 5446 50  0000 L CNN
+F 1 "100k" H 6370 5355 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 6230 5400 50  0001 C CNN
+F 3 "~" H 6300 5400 50  0001 C CNN
+	1    6300 5400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5350 4550 5450 4550
+Wire Wire Line
+	5450 4550 5450 5100
+Wire Wire Line
+	5450 5100 6300 5100
+Connection ~ 6300 5100
+Wire Wire Line
+	7150 4200 7150 5100
 $EndSCHEMATC
