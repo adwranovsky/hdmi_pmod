@@ -6,17 +6,17 @@
 
 module tmds #(
     parameter OBUFDS_IOSTANDARD = "TMDS_33",
-    localparam BITRATE_OUT = 251750000, // TMDS clock for 640x480 60 Hz
-    localparam CLK_I_FREQ = 100000000,
-    localparam CLK_I_MULT = 5, // Make sure not to exceed PLL_Fvcomax (1.6 GHz for -1 speed grade on Artix 7 parts)
-    localparam FVCO_DIV = 4
+    parameter CLK_I_FREQ = 100000000,
+    parameter CLK_I_MULT = 15, // Make sure not to exceed PLL_Fvcomax (1.6 GHz for -1 speed grade on Artix 7 parts)
+    parameter CLK_I_DIV = 1,
+    parameter VCO_DIV = 12
 ) (
     input wire clk_i,
     input wire rst_i,
 
-    output wire symbol_fifo_full_o;
-    input  wire write_symbol_i;
-    input  wire [9:0] symbol_i;
+    output wire symbol_fifo_full_o,
+    input  wire write_symbol_i,
+    input  wire [9:0] symbol_i,
 
     output wire tmds_p_o,
     output wire tmds_n_o
@@ -71,8 +71,8 @@ PLLE2_BASE #(
     .CLKIN1_PERIOD(1e6 / CLK_I_FREQ), // Input clock period in ns to ps resolution (i.e. 33.333 is 30 MHz).
 
     // CLKOUT0_DIVIDE - CLKOUT5_DIVIDE: Divide amount for each CLKOUT (1-128)
-    .CLKOUT0_DIVIDE(1),
-    .CLKOUT1_DIVIDE(5),  // the parallel (pixel) clock must be 1/5 the serial clock for OSERDESE2 in 10:1 DDR mode
+    .CLKOUT0_DIVIDE(VCO_DIV),
+    .CLKOUT1_DIVIDE(VCO_DIV*5),  // the parallel (pixel) clock must be 1/5 the serial clock for OSERDESE2 in 10:1 DDR mode
     .CLKOUT2_DIVIDE(1),
     .CLKOUT3_DIVIDE(1),
     .CLKOUT4_DIVIDE(1),
@@ -94,7 +94,7 @@ PLLE2_BASE #(
     .CLKOUT4_PHASE(0.0),
     .CLKOUT5_PHASE(0.0),
 
-    .DIVCLK_DIVIDE(FVCO_DIV), // Master division value, (1-56)
+    .DIVCLK_DIVIDE(CLK_I_DIV), // Master division value, (1-56)
     .REF_JITTER1(0.0), // Reference input jitter in UI, (0.000-0.999).
     .STARTUP_WAIT("FALSE") // Delay DONE until PLL Locks, ("TRUE"/"FALSE")
 ) pll (
@@ -309,4 +309,5 @@ OBUFDS #(
     .OB(tmds_n_o),
 );
 endmodule
+
 `default_nettype wire

@@ -5,12 +5,10 @@ name : adwranovsky:hardware:hdmi_pmod:0.1
 filesets:
     rtl:
         files:
+            - ./lfsr.v
             - ./tmds.v
             - ./reset_synchronizer.v
-        file_type: systemVerilogSource
-    lfsr_only:
-        files:
-            - ./lfsr.v
+            - ./scope_test.v
         file_type: systemVerilogSource
     lfsr_testbench:
         depend:
@@ -19,9 +17,9 @@ filesets:
             - ./lfsr.v : {file_type : systemVerilogSource}
             - ./test_lfsr.cpp
         file_type: cppSource
-    arty_a7_35t:
+    scope_test:
         files:
-            - ./Arty-A7-35-Master.xdc
+            - ./Arty-A7-35-scope_test.xdc
         file_type: xdc
 
 targets:
@@ -29,8 +27,8 @@ targets:
         filesets : [rtl]
     lint:
         default_tool : verilator
-        filesets     : [rtl, top]
-        toplevel     : top
+        filesets     : [rtl]
+        toplevel     : scope_test
         tools:
             verilator:
                 mode: "lint-only"
@@ -43,10 +41,10 @@ targets:
                 mode              : cc
                 verilator_options : [--trace, -Wall, --threads, 24, -CFLAGS, -Wall]
                 libs              : []
-    arty_a7_35t:
+    scope_test:
         default_tool : vivado
-        filesets     : [rtl]
-        toplevel     : top
+        filesets     : [rtl, scope_test]
+        toplevel     : scope_test
         tools:
             vivado:
                 part: xc7a35ticsg324-1L

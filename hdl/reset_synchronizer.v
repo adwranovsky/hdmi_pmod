@@ -11,7 +11,7 @@ module reset_synchronizer #(
     reg reset_n_stable;
     always @(posedge clk_i) begin
         reset_n_metastable[0] <= reset_n_i;
-        reset_n_metastable[1] <= reset_metastable[0];
+        reset_n_metastable[1] <= reset_n_metastable[0];
         reset_n_stable <= reset_n_metastable[1];
     end
 
