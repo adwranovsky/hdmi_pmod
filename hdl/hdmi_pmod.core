@@ -1,0 +1,53 @@
+CAPI=2:
+
+name : adwranovsky:hardware:hdmi_pmod:0.1
+
+filesets:
+    rtl:
+        files:
+            - ./tmds.v
+            - ./reset_synchronizer.v
+        file_type: systemVerilogSource
+    lfsr_only:
+        files:
+            - ./lfsr.v
+        file_type: systemVerilogSource
+    lfsr_testbench:
+        depend:
+            - ">=adwranovsky_VerilatorSimulationModels_ModelUtils-0.1"
+        files:
+            - ./lfsr.v : {file_type : systemVerilogSource}
+            - ./test_lfsr.cpp
+        file_type: cppSource
+    arty_a7_35t:
+        files:
+            - ./Arty-A7-35-Master.xdc
+        file_type: xdc
+
+targets:
+    default:
+        filesets : [rtl]
+    lint:
+        default_tool : verilator
+        filesets     : [rtl, top]
+        toplevel     : top
+        tools:
+            verilator:
+                mode: "lint-only"
+    test_lfsr:
+        default_tool : verilator
+        filesets     : [lfsr_testbench]
+        toplevel     : lfsr
+        tools:
+            verilator:
+                mode              : cc
+                verilator_options : [--trace, -Wall, --threads, 24, -CFLAGS, -Wall]
+                libs              : []
+    arty_a7_35t:
+        default_tool : vivado
+        filesets     : [rtl]
+        toplevel     : top
+        tools:
+            vivado:
+                part: xc7a35ticsg324-1L
+                synth: yosys
