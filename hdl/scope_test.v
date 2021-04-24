@@ -24,7 +24,7 @@ lfsr compliance_pattern_generator(
 // Serialize and buffer the pattern
 tmds #(
     .OBUFDS_IOSTANDARD("LVDS_25"), // Set to LVDS_25 so that I can use the 50 ohm termination to ground on my scope
-    .CLK_I_FREQ(100000000),
+    .CLK_I_FREQ(100_000_000),
     .CLK_I_MULT(15),
     .CLK_I_DIV(1),
     .VCO_DIV(12)

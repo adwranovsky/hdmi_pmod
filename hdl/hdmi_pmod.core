@@ -17,6 +17,11 @@ filesets:
             - ./lfsr.v : {file_type : systemVerilogSource}
             - ./test_lfsr.cpp
         file_type: cppSource
+    scope_testbench:
+        files:
+            - ./scope_test_tb.v
+            - ./glbl.v
+        file_type: systemVerilogSource
     scope_test:
         files:
             - ./Arty-A7-35-scope_test.xdc
@@ -25,14 +30,7 @@ filesets:
 targets:
     default:
         filesets : [rtl]
-    lint:
-        default_tool : verilator
-        filesets     : [rtl]
-        toplevel     : scope_test
-        tools:
-            verilator:
-                mode: "lint-only"
-    test_lfsr:
+    sim_lfsr:
         default_tool : verilator
         filesets     : [lfsr_testbench]
         toplevel     : lfsr
@@ -49,3 +47,10 @@ targets:
             vivado:
                 part: xc7a35ticsg324-1L
                 synth: yosys
+    sim_scope_test:
+        default_tool : xsim
+        filesets     : [rtl, scope_testbench]
+        toplevel     : scope_test_tb
+        tools:
+            xsim:
+                xelab_options   : [--timescale, 1ns/1ps, -L, unisims_ver, -L, secureip, work.glbl]

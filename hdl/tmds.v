@@ -6,7 +6,7 @@
 
 module tmds #(
     parameter OBUFDS_IOSTANDARD = "TMDS_33",
-    parameter CLK_I_FREQ = 100000000,
+    parameter CLK_I_FREQ = 100_000_000,
     parameter CLK_I_MULT = 15, // Make sure not to exceed PLL_Fvcomax (1.6 GHz for -1 speed grade on Artix 7 parts)
     parameter CLK_I_DIV = 1,
     parameter VCO_DIV = 12
@@ -40,7 +40,7 @@ module tmds #(
  *  OUT_FIFO, we will also synchonize this signal to the clk_i clock domain, and use it to mask WREN.
  *
  */      
-wire vco_div_clk, pll_locked;
+wire vco_div_clk;
 wire serial_clock, parallel_clock; // parallel_clock must be x5 serial clock for 10 bit DDR mode
 wire pll_locked, pll_locked_sync;
 reset_synchronizer #(
@@ -53,7 +53,7 @@ reset_synchronizer #(
 wire reset_out_fifo_and_oserdes = ~pll_locked_sync;
 wire rden_mask = pll_locked_sync;
 // synchronize this signal to the clk_i domain as well so that we can use it to mask WREN
-wire wren_mask_metastable, wren_mask;
+reg wren_mask_metastable, wren_mask;
 always @(posedge clk_i)
     {wren_mask, wren_mask_metastable} <= {wren_mask_metastable, pll_locked_sync};
 
@@ -68,7 +68,7 @@ PLLE2_BASE #(
     .BANDWIDTH("OPTIMIZED"), // OPTIMIZED, HIGH, LOW
     .CLKFBOUT_MULT(CLK_I_MULT), // Multiply value for all CLKOUT, (2-64)
     .CLKFBOUT_PHASE(0.0), // Phase offset in degrees of CLKFB, (-360.000-360.000).
-    .CLKIN1_PERIOD(1e6 / CLK_I_FREQ), // Input clock period in ns to ps resolution (i.e. 33.333 is 30 MHz).
+    .CLKIN1_PERIOD(1e9 / CLK_I_FREQ), // Input clock period in ns to ps resolution (i.e. 33.333 is 30 MHz).
 
     // CLKOUT0_DIVIDE - CLKOUT5_DIVIDE: Divide amount for each CLKOUT (1-128)
     .CLKOUT0_DIVIDE(VCO_DIV),
@@ -301,12 +301,12 @@ OSERDESE2 #(
  * Turn the single-ended signal into a differential signal and buffer it so it can be sent off-chip.
  */
 OBUFDS #(
-    .IOSTANDARD(OBUFDS_IOSTANDARD),
-    //.SLEW("FAST")
+    //.SLEW("FAST"),
+    .IOSTANDARD(OBUFDS_IOSTANDARD)
 ) tmds_diff_pair_out (
     .I(serdes_serial_out),
     .O(tmds_p_o),
-    .OB(tmds_n_o),
+    .OB(tmds_n_o)
 );
 endmodule
 
