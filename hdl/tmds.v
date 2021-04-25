@@ -5,14 +5,12 @@
  */
 
 module tmds #(
-    parameter OBUFDS_IOSTANDARD = "TMDS_33",
-    parameter CLK_I_FREQ = 100_000_000,
-    parameter CLK_I_MULT = 15, // Make sure not to exceed PLL_Fvcomax (1.6 GHz for -1 speed grade on Artix 7 parts)
-    parameter CLK_I_DIV = 1,
-    parameter VCO_DIV = 12
+    parameter OBUFDS_IOSTANDARD = "TMDS_33"
 ) (
-    input wire clk_i,
-    input wire rst_i,
+    input wire clk_logic_i,
+    input wire clk_parallel_i,
+    input wire clk_serial_i,
+    input wire clocks_stable_i,
 
     output wire symbol_fifo_full_o,
     input  wire write_symbol_i,
@@ -25,8 +23,6 @@ module tmds #(
 
 /*
  * Reset logic
- *  PLL reqs:
- *      None. RST may be asserted and deasserted asynchronously.
  *  OSERDES reqs:
  *      RESET may be asserted asynchronously, and must be deasserted synchronously with CLKDIV. RESET should only be
  *      deasserted once both clocks are stable.
@@ -35,93 +31,27 @@ module tmds #(
  *      while RESET is asserted. RESET can be asserted and deasserted asynchronously. RESET should be asserted until all
  *      clocks are stable.
  *
- *  Synchronizing pll_locked to CLKDIV (parallel_clock), and then holding it low for at least 4 cycles of clk_i should
- *  create a reset signal that satisfies both the OSERDES module and the OUT_FIFO module. To handle WREN of the
- *  OUT_FIFO, we will also synchonize this signal to the clk_i clock domain, and use it to mask WREN.
+ *  Synchronizing clocks_stable_i to CLKDIV (clk_parallel_i), and then holding it low for at least 4 cycles of
+ *  clk_parallel_i should create a reset signal that satisfies both the OSERDES module and the OUT_FIFO module. To
+ *  handle WREN of the OUT_FIFO, we will also synchonize this signal to the clk_logic_i clock domain, and use it to mask
+ *  WREN.
  *
  */      
-wire vco_div_clk;
-wire serial_clock, parallel_clock; // parallel_clock must be x5 serial clock for 10 bit DDR mode
-wire pll_locked, pll_locked_sync;
+wire clocks_stable_sync;
 reset_synchronizer #(
-    .COUNT(50) // This MUST be long enough to be at least 4 clock cycles of the slowest clock (probably parallel_clock)
+    .COUNT(50) // This MUST be long enough to be at least 4 clock cycles of the slowest clock (probably clk_parallel_i)
 ) pll_locked_synchronizer (
-    .clk_i(parallel_clock),
-    .reset_n_i(pll_locked),
-    .reset_n_o(pll_locked_sync)
+    .clk_i(clk_parallel_i),
+    .reset_n_i(clocks_stable_i),
+    .reset_n_o(clocks_stable_sync)
 );
-wire reset_out_fifo_and_oserdes = ~pll_locked_sync;
-wire rden_mask = pll_locked_sync;
-// synchronize this signal to the clk_i domain as well so that we can use it to mask WREN
+wire reset_out_fifo_and_oserdes = ~clocks_stable_sync;
+wire rden_mask = clocks_stable_sync;
+// synchronize this signal to the clk_logic_i domain as well so that we can use it to mask WREN
 reg wren_mask_metastable, wren_mask;
-always @(posedge clk_i)
-    {wren_mask, wren_mask_metastable} <= {wren_mask_metastable, pll_locked_sync};
+always @(posedge clk_logic_i)
+    {wren_mask, wren_mask_metastable} <= {wren_mask_metastable, clocks_stable_sync};
 
-/*
- * Notes:
- *  The frequency for any given CLKOUTx is equal to Fclkin1 * CLKFBOUT_MULT / DIVCLK_DIVIDE / CLKOUTx_DIVIDE
- *
- * Reset requirements:
- *  None. RST may be asserted and deasserted asynchronously.
- */
-PLLE2_BASE #(
-    .BANDWIDTH("OPTIMIZED"), // OPTIMIZED, HIGH, LOW
-    .CLKFBOUT_MULT(CLK_I_MULT), // Multiply value for all CLKOUT, (2-64)
-    .CLKFBOUT_PHASE(0.0), // Phase offset in degrees of CLKFB, (-360.000-360.000).
-    .CLKIN1_PERIOD(1e9 / CLK_I_FREQ), // Input clock period in ns to ps resolution (i.e. 33.333 is 30 MHz).
-
-    // CLKOUT0_DIVIDE - CLKOUT5_DIVIDE: Divide amount for each CLKOUT (1-128)
-    .CLKOUT0_DIVIDE(VCO_DIV),
-    .CLKOUT1_DIVIDE(VCO_DIV*5),  // the parallel (pixel) clock must be 1/5 the serial clock for OSERDESE2 in 10:1 DDR mode
-    .CLKOUT2_DIVIDE(1),
-    .CLKOUT3_DIVIDE(1),
-    .CLKOUT4_DIVIDE(1),
-    .CLKOUT5_DIVIDE(1),
-
-    // CLKOUT0_DUTY_CYCLE - CLKOUT5_DUTY_CYCLE: Duty cycle for each CLKOUT (0.001-0.999).
-    .CLKOUT0_DUTY_CYCLE(0.5),
-    .CLKOUT1_DUTY_CYCLE(0.5),
-    .CLKOUT2_DUTY_CYCLE(0.5),
-    .CLKOUT3_DUTY_CYCLE(0.5),
-    .CLKOUT4_DUTY_CYCLE(0.5),
-    .CLKOUT5_DUTY_CYCLE(0.5),
-
-    // CLKOUT0_PHASE - CLKOUT5_PHASE: Phase offset for each CLKOUT (-360.000-360.000).
-    .CLKOUT0_PHASE(0.0),
-    .CLKOUT1_PHASE(0.0),
-    .CLKOUT2_PHASE(0.0),
-    .CLKOUT3_PHASE(0.0),
-    .CLKOUT4_PHASE(0.0),
-    .CLKOUT5_PHASE(0.0),
-
-    .DIVCLK_DIVIDE(CLK_I_DIV), // Master division value, (1-56)
-    .REF_JITTER1(0.0), // Reference input jitter in UI, (0.000-0.999).
-    .STARTUP_WAIT("FALSE") // Delay DONE until PLL Locks, ("TRUE"/"FALSE")
-) pll (
-    // Clock Outputs: 1-bit (each) output: User configurable clock outputs
-    .CLKOUT0(serial_clock),
-    .CLKOUT1(parallel_clock),
-    .CLKOUT2(),
-    .CLKOUT3(),
-    .CLKOUT4(),
-    .CLKOUT5(),
-
-    // Feedback Clocks: 1-bit (each) output: Clock feedback ports
-    .CLKFBOUT(vco_div_clk), // 1-bit output: Feedback clock
-
-    // Status Port: 1-bit (each) output: PLL status ports
-    .LOCKED(pll_locked), // 1-bit output: LOCK
-
-    // Clock Input: 1-bit (each) input: Clock input
-    .CLKIN1(clk_i), // 1-bit input: Input clock
-
-    // Control Ports: 1-bit (each) input: PLL control ports
-    .PWRDWN(1'b0), // 1-bit input: Power-down
-    .RST(rst_i), // 1-bit input: Reset
-
-    // Feedback Clocks: 1-bit (each) input: Clock feedback ports
-    .CLKFBIN(vco_div_clk) // 1-bit input: Feedback clock
-);
 
 
 // Read from the FIFO whenever there is data ready, but keep RDEN low when in reset
@@ -132,7 +62,7 @@ wire fifo_rden_masked = rden_mask & fifo_rden;
 wire fifo_wren_masked = wren_mask & write_symbol_i;
 
 /*
- * An OUT_FIFO to transition between the logic clock domain (clk_i) and the pixel clock domain (parallel_clock). The
+ * An OUT_FIFO to transition between the logic clock domain (clk_logic_i) and the pixel clock domain (clk_parallel_i). The
  * OUT_FIFO module is located adjacent to any OSERDES elements and the IO buffers.
  */
 wire [9:0] serdes_parallel_in;
@@ -174,10 +104,10 @@ OUT_FIFO #(
     .D9(8'b0), // 8-bit input: Channel 9 input bus
 
     // FIFO Control Signals: 1-bit (each) input: Clocks, Resets and Enables
-    .RDCLK(parallel_clock), // 1-bit input: Read clock
+    .RDCLK(clk_parallel_i), // 1-bit input: Read clock
     .RDEN(fifo_rden_masked), // 1-bit input: Read enable
     .RESET(reset_out_fifo_and_oserdes), // 1-bit input: Active high reset
-    .WRCLK(clk_i), // 1-bit input: Write clock
+    .WRCLK(clk_logic_i), // 1-bit input: Write clock
     .WREN(fifo_wren_masked) // 1-bit input: Write enable
 );
 
@@ -213,8 +143,8 @@ OSERDESE2 #(
     .TFB(), // 1-bit output: 3-state control
     .TQ(), // 1-bit output: 3-state control
 
-    .CLK(serial_clock), // 1-bit input: High speed clock
-    .CLKDIV(parallel_clock), // 1-bit input: Divided clock
+    .CLK(clk_serial_i), // 1-bit input: High speed clock
+    .CLKDIV(clk_parallel_i), // 1-bit input: Divided clock
 
     // D1 - D8: 1-bit (each) input: Parallel data inputs (1-bit each)
     .D1(serdes_parallel_in[0]),
@@ -267,8 +197,8 @@ OSERDESE2 #(
     .TFB(), // 1-bit output: 3-state control
     .TQ(), // 1-bit output: 3-state control
 
-    .CLK(serial_clock), // 1-bit input: High speed clock
-    .CLKDIV(parallel_clock), // 1-bit input: Divided clock
+    .CLK(clk_serial_i), // 1-bit input: High speed clock
+    .CLKDIV(clk_parallel_i), // 1-bit input: Divided clock
 
     // D1 - D8: 1-bit (each) input: Parallel data inputs (1-bit each)
     .D1(1'b0),
