@@ -8,7 +8,11 @@ module scope_test #(
 ) (
     input wire clk_i,
     output wire tmds_p_o,
-    output wire tmds_n_o
+    output wire tmds_n_o,
+
+    output wire led_logic_clk_o,
+    output wire led_serial_clk_o,
+    output wire led_parallel_clk_o
 );
 
 // Begin with a reset
@@ -89,7 +93,26 @@ PLLE2_BASE #(
     .CLKFBIN(clk_pll_feedback) // 1-bit input: Feedback clock
 );
 
-// synchronize the pll_locked signal to the logic clock domain
+/*
+ * For each clock, flash an LED at a rate proportional to the clock frequency
+ */
+reg [24:0]
+    counter_logic_clk    = 0,
+    counter_parallel_clk = 0,
+    counter_serial_clk   = 0;
+always @(posedge clk_logic)
+    counter_logic_clk <= counter_logic_clk + 1;
+always @(posedge clk_parallel)
+    counter_parallel_clk <= counter_parallel_clk + 1;
+always @(posedge clk_serial)
+    counter_serial_clk <= counter_serial_clk + 1;
+assign led_logic_clk_o    = counter_logic_clk[24];
+assign led_parallel_clk_o = counter_parallel_clk[24];
+assign led_serial_clk_o   = counter_serial_clk[24];
+
+/*
+ * synchronize the pll_locked signal to the logic clock domain
+ */
 wire reset_logic_domain_n;
 reset_synchronizer #(
     .COUNT(50)
@@ -100,7 +123,9 @@ reset_synchronizer #(
 );
 wire reset_logic_domain = ~reset_logic_domain_n;
 
-// Generate a compliance pattern for testing on the scope
+/*
+ * Generate a compliance pattern for testing on the scope
+ */
 wire fifo_full;
 wire [9:0] pattern;
 wire write_pattern = !fifo_full;
@@ -111,7 +136,9 @@ lfsr compliance_pattern_generator(
     .output_o(pattern)
 );
 
-// Serialize and buffer the pattern
+/*
+ * Serialize and buffer the pattern
+ */
 tmds #(
     .OBUFDS_IOSTANDARD("LVDS_25") // Set to LVDS_25 so that I can use the 50 ohm termination to ground on my scope
 ) hdmi_buf (
