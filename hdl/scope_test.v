@@ -7,8 +7,15 @@ module scope_test #(
     parameter CLK_LOGIC_DIV = 15
 ) (
     input wire clk_i,
-    output wire tmds_p_o,
-    output wire tmds_n_o,
+
+    output wire tmds_red_p_o,
+    output wire tmds_red_n_o,
+    output wire tmds_green_p_o,
+    output wire tmds_green_n_o,
+    output wire tmds_blue_p_o,
+    output wire tmds_blue_n_o,
+    output wire tmds_clk_p_o,
+    output wire tmds_clk_n_o,
 
     output wire led_logic_clk_o,
     output wire led_serial_clk_o,
@@ -140,7 +147,7 @@ lfsr compliance_pattern_generator(
  * Serialize and buffer the pattern
  */
 tmds #(
-    .OBUFDS_IOSTANDARD("LVDS_25") // Set to LVDS_25 so that I can use the 50 ohm termination to ground on my scope
+    .OBUFDS_IOSTANDARD("TMDS_33")
 ) hdmi_buf (
     .clk_logic_i(clk_logic),
     .clk_parallel_i(clk_parallel),
@@ -149,8 +156,30 @@ tmds #(
     .symbol_fifo_full_o(fifo_full),
     .write_symbol_i(write_pattern),
     .symbol_i(pattern),
-    .tmds_p_o(tmds_p_o),
-    .tmds_n_o(tmds_n_o)
+    .tmds_p_o(tmds_red_p_o),
+    .tmds_n_o(tmds_red_n_o)
+);
+
+OBUFDS #(
+    .IOSTANDARD("TMDS_33")
+) tmds_green (
+    .I(clk_parallel),
+    .O(tmds_green_p_o),
+    .OB(tmds_green_n_o)
+);
+OBUFDS #(
+    .IOSTANDARD("TMDS_33")
+) tmds_blue (
+    .I(clk_parallel),
+    .O(tmds_blue_p_o),
+    .OB(tmds_blue_n_o)
+);
+OBUFDS #(
+    .IOSTANDARD("TMDS_33")
+) tmds_clk (
+    .I(clk_parallel),
+    .O(tmds_clk_p_o),
+    .OB(tmds_clk_n_o)
 );
 
 endmodule
