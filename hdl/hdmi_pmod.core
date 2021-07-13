@@ -6,7 +6,7 @@ filesets:
     rtl:
         files:
             - ./lfsr.v
-            - ./tmds.v
+            - ./dvi_buf_xc7.v
             - ./reset_synchronizer.v
             - ./scope_test.v
         file_type: systemVerilogSource
@@ -26,6 +26,13 @@ filesets:
         files:
             - ./Arty-A7-35-scope_test.xdc
         file_type: xdc
+    noise480p:
+        depend:
+            - ">=projectf_explore_display-0.1"
+        files:
+            - ./Arty-A7-35-noise480p.xdc : {file_type : xdc}
+            - ./noise480p.v
+        file_type: systemVerilogSource
 
 targets:
     default:
@@ -54,3 +61,10 @@ targets:
         tools:
             xsim:
                 xelab_options   : [--timescale, 1ns/1ps, -L, unisims_ver, -L, secureip, work.glbl]
+    noise480p:
+        default_tool : vivado
+        filesets     : [rtl, noise480p]
+        toplevel     : noise480p
+        tools:
+            vivado:
+                part: xc7a35ticsg324-1L
