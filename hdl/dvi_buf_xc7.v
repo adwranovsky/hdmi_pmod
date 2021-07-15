@@ -8,6 +8,7 @@ module dvi_buffer_xc7 #(
     parameter OBUFDS_IOSTANDARD = "TMDS_33"
 ) (
     input wire clk_parallel_i,
+    input wire clk_parallel_180deg_i,
     input wire clk_serial_i,
     input wire clocks_stable_i,
 
@@ -181,13 +182,13 @@ generate for (i = 0; i < 3; i = i + 1) begin
 end endgenerate
 
 /*
- * Generate the the clock signal directly from the pixel clock
+ * Generate the clock signal directly from the parallel clock
  */
 OBUFDS #(
     //.SLEW("FAST"),
     .IOSTANDARD(OBUFDS_IOSTANDARD)
 ) tmds_diff_pair_out (
-    .I(clk_parallel_i),
+    .I(clk_parallel_180deg_i),
     .O(tmds_clk_p_o),
     .OB(tmds_clk_n_o)
 );

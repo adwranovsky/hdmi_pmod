@@ -54,10 +54,10 @@ set_property -dict { PACKAGE_PIN E15   IOSTANDARD TMDS_33 } [get_ports { tmds_gr
 set_property -dict { PACKAGE_PIN E16   IOSTANDARD TMDS_33 } [get_ports { tmds_green_n_o }]; #IO_L11N_T1_SRCC_15 Sch=jb_n[1]
 set_property -dict { PACKAGE_PIN D15   IOSTANDARD TMDS_33 } [get_ports { tmds_clk_p_o }]; #IO_L12P_T1_MRCC_15 Sch=jb_p[2]
 set_property -dict { PACKAGE_PIN C15   IOSTANDARD TMDS_33 } [get_ports { tmds_clk_n_o }]; #IO_L12N_T1_MRCC_15 Sch=jb_n[2]
-set_property -dict { PACKAGE_PIN J17   IOSTANDARD TMDS_33 } [get_ports { tmds_blue_p_o }]; #IO_L23P_T3_FOE_B_15 Sch=jb_p[3]
-set_property -dict { PACKAGE_PIN J18   IOSTANDARD TMDS_33 } [get_ports { tmds_blue_n_o }]; #IO_L23N_T3_FWE_B_15 Sch=jb_n[3]
-set_property -dict { PACKAGE_PIN K15   IOSTANDARD TMDS_33 } [get_ports { tmds_red_p_o }]; #IO_L24P_T3_RS1_15 Sch=jb_p[4]
-set_property -dict { PACKAGE_PIN J15   IOSTANDARD TMDS_33 } [get_ports { tmds_red_n_o }]; #IO_L24N_T3_RS0_15 Sch=jb_n[4]
+set_property -dict { PACKAGE_PIN J17   IOSTANDARD TMDS_33 } [get_ports { tmds_red_p_o }]; #IO_L23P_T3_FOE_B_15 Sch=jb_p[3]
+set_property -dict { PACKAGE_PIN J18   IOSTANDARD TMDS_33 } [get_ports { tmds_red_n_o }]; #IO_L23N_T3_FWE_B_15 Sch=jb_n[3]
+set_property -dict { PACKAGE_PIN K15   IOSTANDARD TMDS_33 } [get_ports { tmds_blue_p_o }]; #IO_L24P_T3_RS1_15 Sch=jb_p[4]
+set_property -dict { PACKAGE_PIN J15   IOSTANDARD TMDS_33 } [get_ports { tmds_blue_n_o }]; #IO_L24N_T3_RS0_15 Sch=jb_n[4]
 
 ## Pmod Header JC
 #set_property -dict { PACKAGE_PIN U12   IOSTANDARD LVCMOS33 } [get_ports { jc[0] }]; #IO_L20P_T3_A08_D24_14 Sch=jc_p[1]

@@ -52,7 +52,7 @@ assign reset_led_o = reset_input_oscillator_domain;
  * Reset requirements:
  *  None. RST may be asserted and deasserted asynchronously.
  */
-wire clk_pll_feedback, clk_logic, clk_parallel, clk_serial, pll_locked;
+wire clk_pll_feedback, clk_logic, clk_parallel, clk_serial, pll_locked, clk_parallel_180deg;
 PLLE2_BASE #(
     .BANDWIDTH("OPTIMIZED"), // OPTIMIZED, HIGH, LOW
     .CLKFBOUT_MULT(CLK_I_MULT), // Multiply value for all CLKOUT, (2-64)
@@ -63,7 +63,7 @@ PLLE2_BASE #(
     .CLKOUT0_DIVIDE(CLK_LOGIC_DIV),
     .CLKOUT1_DIVIDE(CLK_SERIAL_DIV),
     .CLKOUT2_DIVIDE(CLK_SERIAL_DIV*5), // the parallel (pixel) clock must be 1/5 the serial clock for OSERDESE2 in 10:1 DDR mode
-    .CLKOUT3_DIVIDE(1),
+    .CLKOUT3_DIVIDE(CLK_SERIAL_DIV*5),
     .CLKOUT4_DIVIDE(1),
     .CLKOUT5_DIVIDE(1),
 
@@ -79,6 +79,7 @@ PLLE2_BASE #(
     .CLKOUT0_PHASE(0.0),
     .CLKOUT1_PHASE(0.0),
     .CLKOUT2_PHASE(0.0),
+    //.CLKOUT3_PHASE(-74.7),
     .CLKOUT3_PHASE(0.0),
     .CLKOUT4_PHASE(0.0),
     .CLKOUT5_PHASE(0.0),
@@ -91,7 +92,7 @@ PLLE2_BASE #(
     .CLKOUT0(clk_logic),
     .CLKOUT1(clk_serial),
     .CLKOUT2(clk_parallel),
-    .CLKOUT3(),
+    .CLKOUT3(clk_parallel_180deg),
     .CLKOUT4(),
     .CLKOUT5(),
 
@@ -255,6 +256,7 @@ dvi_buffer_xc7 #(
     .OBUFDS_IOSTANDARD("TMDS_33")
 ) dvi_buffer (
     .clk_parallel_i(clk_parallel),
+    .clk_parallel_180deg_i(clk_parallel_180deg),
     .clk_serial_i(clk_serial),
     .clocks_stable_i(pll_locked),
 
