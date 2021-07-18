@@ -8,7 +8,6 @@ module dvi_buffer_xc7 #(
     parameter OBUFDS_IOSTANDARD = "TMDS_33"
 ) (
     input wire clk_parallel_i,
-    input wire clk_parallel_180deg_i,
     input wire clk_serial_i,
     input wire clocks_stable_i,
 
@@ -188,7 +187,7 @@ OBUFDS #(
     //.SLEW("FAST"),
     .IOSTANDARD(OBUFDS_IOSTANDARD)
 ) tmds_diff_pair_out (
-    .I(clk_parallel_180deg_i),
+    .I(clk_parallel_i),
     .O(tmds_clk_p_o),
     .OB(tmds_clk_n_o)
 );

@@ -33,6 +33,13 @@ filesets:
             - ./Arty-A7-35-noise480p.xdc : {file_type : xdc}
             - ./noise480p.v
         file_type: systemVerilogSource
+    noise720p:
+        depend:
+            - ">=projectf_explore_display-0.1"
+        files:
+            - ./Arty-A7-35-noise480p.xdc : {file_type : xdc}
+            - ./noise720p.v
+        file_type: systemVerilogSource
 
 targets:
     default:
@@ -65,6 +72,13 @@ targets:
         default_tool : vivado
         filesets     : [rtl, noise480p]
         toplevel     : noise480p
+        tools:
+            vivado:
+                part: xc7a35ticsg324-1L
+    noise720p:
+        default_tool : vivado
+        filesets     : [rtl, noise720p]
+        toplevel     : noise720p
         tools:
             vivado:
                 part: xc7a35ticsg324-1L

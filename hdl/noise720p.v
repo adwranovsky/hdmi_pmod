@@ -1,9 +1,9 @@
 `default_nettype none
-module noise480p #(
+module noise720p #(
     parameter CLK_I_FREQ = 100_000_000,
     parameter CLK_I_MULT = 15, // Make sure not to exceed PLL_Fvcomax (1.6 GHz for -1 speed grade on Artix 7 parts)
     parameter CLK_I_DIV = 1,
-    parameter CLK_SERIAL_DIV = 12,
+    parameter CLK_SERIAL_DIV = 4,
     parameter CLK_LOGIC_DIV = 15
 ) (
     input wire clk_i,
@@ -158,7 +158,7 @@ wire reset_parallel_domain = ~reset_parallel_domain_n;
 localparam COORD_WIDTH = 16;
 wire [COORD_WIDTH-1:0] x_coordinate, y_coordinate;
 wire hsync, vsync, data_enable, frame, line;
-display_timings_480p #(
+display_timings_720p #(
     .CORDW(COORD_WIDTH)
 ) display_timings (
     .clk_pix(clk_parallel),   // pixel clock
