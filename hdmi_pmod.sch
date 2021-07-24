@@ -40,17 +40,13 @@ TMDS_G+
 Text Label 6900 3000 0    50   ~ 0
 TMDS_G-
 Text Label 6900 3100 0    50   ~ 0
-TMDS_R+
-Text Label 6900 3200 0    50   ~ 0
-TMDS_R-
+TMDS_B+
 Text Label 6900 3300 0    50   ~ 0
 TMDS_CLK+
 Text Label 6900 3400 0    50   ~ 0
 TMDS_CLK-
 Text Label 6900 2700 0    50   ~ 0
-TMDS_B+
-Text Label 6900 2800 0    50   ~ 0
-TMDS_B-
+TMDS_R+
 $Comp
 L power:GND #PWR0101
 U 1 1 5FD70667
@@ -422,4 +418,8 @@ Wire Wire Line
 Connection ~ 6300 5100
 Wire Wire Line
 	7150 4200 7150 5100
+Text Label 6900 3200 0    50   ~ 0
+TMDS_B-
+Text Label 6900 2800 0    50   ~ 0
+TMDS_R-
 $EndSCHEMATC
