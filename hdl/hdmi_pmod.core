@@ -8,7 +8,6 @@ filesets:
             - ./lfsr.v
             - ./dvi_buf_xc7.v
             - ./reset_synchronizer.v
-            - ./scope_test.v
         file_type: systemVerilogSource
     lfsr_testbench:
         depend:
@@ -17,15 +16,6 @@ filesets:
             - ./lfsr.v : {file_type : systemVerilogSource}
             - ./test_lfsr.cpp
         file_type: cppSource
-    scope_testbench:
-        files:
-            - ./scope_test_tb.v
-            - ./glbl.v
-        file_type: systemVerilogSource
-    scope_test:
-        files:
-            - ./Arty-A7-35-scope_test.xdc
-        file_type: xdc
     noise480p:
         depend:
             - ">=projectf_explore_display-0.1"
@@ -53,21 +43,6 @@ targets:
                 mode              : cc
                 verilator_options : [--trace, -Wall, --threads, 24, -CFLAGS, -Wall]
                 libs              : []
-    scope_test:
-        default_tool : vivado
-        filesets     : [rtl, scope_test]
-        toplevel     : scope_test
-        tools:
-            vivado:
-                part: xc7a35ticsg324-1L
-                synth: yosys
-    sim_scope_test:
-        default_tool : xsim
-        filesets     : [rtl, scope_testbench]
-        toplevel     : scope_test_tb
-        tools:
-            xsim:
-                xelab_options   : [--timescale, 1ns/1ps, -L, unisims_ver, -L, secureip, work.glbl]
     noise480p:
         default_tool : vivado
         filesets     : [rtl, noise480p]
