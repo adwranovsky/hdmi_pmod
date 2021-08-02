@@ -15,17 +15,12 @@ fusesoc library add --global CoreOrchard https://github.com/adwranovsky/CoreOrch
 ```
 
 # Running the examples
-All examples can be run using FuseSoC. For example, to build the noise720p design and load the bitstream onto your
-board:
+All examples can be run using FuseSoC. For example, you can build the noise720p design and load the bitstream onto your
+board with the following command:
 ```bash
 fusesoc --cores-root . run --target=noise720p 'adwranovsky:hardware:hdmi_pmod'
 ```
 
-Feel free to dig around in `hdmi_pmod.core` to see what other targets are available!
+FuseSoC will pull in all dependencies automatically as long as my cores library was added correctly above!
 
-# Gotchas
-## xsim failed to compile generated C file xsim_1.c
-XSIM seems to require the ncurses 5 library, so use your package manager to install it. On Gentoo you can do this with
-```
-emerge --ask sys-libs/ncurses-compat
-```
+Feel free to dig around in the [core description file](./hdmi_pmod.core) to see what other targets are available.
