@@ -3,14 +3,14 @@ A simple digital video breakout board compatible with the high-speed variant of 
 
 See my [Hackaday project page](https://hackaday.io/project/176327-hdmi-pmod) for more details.
 
-![Assembled HDMI PMOD image](./docs/hdmi pmod.png)
+![Assembled HDMI PMOD image](./docs/hdmi_pmod.png)
 
 ## Ordering
 I do not currently sell this board anywhere, but you may order and assemble the board yourself.
 
 ### PCB
 I used [JLCPCB](https://jlcpcb.com/) as my board fab since they have a cheap, 4-layer process. To order your own board,
-upload the most recent [gerber files](./gerbers/hdmi_pmod-v2.zip) to the JLCPCB website, then select the settings below.
+upload the most recent [gerber files](./gerbers/) to the JLCPCB website, then select the settings below.
 The surface finish may be changed if you would prefer something without lead.
 
 | Setting             | Value              |
@@ -49,8 +49,8 @@ The schematics, PCB, and HDL code are licensed under the Apache 2.0 license. I d
 footprints, but to the best of my knowledge this license is compatible with all footprints in the design.
 
 ## Works that made this project possible
-First I would like to credit [Will Green](/WillGreen) and the [Project F](https://projectf.io/) blog. He has some great content on how
-to do video on an FPGA, and I use his display timings and DVI encoder modules in this project (you can find them
-[here](/projf/projf-explore/tree/master/lib/display)).
+First I would like to credit [Will Green](https://github.com/WillGreen) and the [Project F](https://projectf.io/) blog.
+He has some great content on how to do video on an FPGA, and I use his display timings and DVI encoder modules in this
+project (you can find them [here](https://github.com/projf/projf-explore/tree/master/lib/display)).
 
-The PMOD footprint also came from [Mithro's kicad-pmod footprint library](/mithro/kicad-pmod).
+The PMOD footprint also came from [Mithro's kicad-pmod footprint library](https://github.com/mithro/kicad-pmod).
