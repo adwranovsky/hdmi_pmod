@@ -1,9 +1,5 @@
 `default_nettype none
 
-/*
- * TODO: add output delays if needed, add documentation
- */
-
 module dvi_buffer_xc7 #(
     parameter OBUFDS_IOSTANDARD = "TMDS_33"
 ) (
