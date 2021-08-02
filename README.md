@@ -15,7 +15,6 @@ The surface finish may be changed if you would prefer something without lead.
 
 | Setting             | Value              |
 | ------------------- | ------------------ |
-| Base Material       |                    |
 | Layers              | 4                  |
 | Dimensions          | 31.9 mm * 20.3 mm  |
 | Different Design    | 1                  |
